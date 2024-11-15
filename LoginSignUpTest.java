@@ -2,7 +2,7 @@ package com.purdue.socialmedia.test;
 
 import static org.junit.Assert.*;
 
-import com.purdue.socialmedia.data.LoginSignUP;
+import com.purdue.socialmedia.data.LoginSignUp;
 import org.junit.Before;
 import org.junit.Test;
 import java.io.*;
