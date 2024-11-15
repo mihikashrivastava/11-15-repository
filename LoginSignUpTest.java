@@ -11,13 +11,13 @@ import java.util.ArrayList;
 import com.purdue.socialmedia.data.User;
 import com.purdue.socialmedia.exeptions.BadDataException;
 
-public class LoginSignUPTest {
+public class LoginSignUpTest {
 
-    private LoginSignUP loginSignUP;
+    private LoginSignUP loginSignUp;
 
     @Before
     public void setUp() {
-        loginSignUP = new LoginSignUP();
+        loginSignUp = new LoginSignUp();
         // Clear the "accounts.txt" file before each test
         try (PrintWriter writer = new PrintWriter(new FileWriter("accounts.txt"))) {
             writer.write(""); // Clear the file
@@ -93,7 +93,7 @@ public class LoginSignUPTest {
             fail("Setup failed: Unable to write to accounts.txt");
         }
 
-        String result = loginSignUP.authorizeLogin("franky", null);
+        String result = loginSignUp.authorizeLogin("franky", null);
         assertEquals("Wrong password! Please try again.", result);
     }
 
@@ -121,7 +121,7 @@ public class LoginSignUPTest {
     public void testCreateNewUserInvalidUsername() {
         // Test for username containing spaces or commas
         try {
-            loginSignUP.createNewUser("bad username", "password123", "bad@user.com", "Bad", "User", "bad.jpg");
+            loginSignUp.createNewUser("bad username", "password123", "bad@user.com", "Bad", "User", "bad.jpg");
             fail("Expected BadDataException for invalid username");
         } catch (BadDataException e) {
             assertEquals("Username contains either spaces or commas", e.getMessage());
@@ -135,7 +135,7 @@ public class LoginSignUPTest {
     public void testCreateNewUserSuccess() {
         // Test for successful user creation
         try {
-            User newUser = loginSignUP.createNewUser("brook", "soulking", "brook@onepiece.com", "Brook", "Soul", "brook.jpg");
+            User newUser = loginSignUp.createNewUser("brook", "soulking", "brook@onepiece.com", "Brook", "Soul", "brook.jpg");
             String username = newUser.getUsername();
             assertEquals("brook", username);
         } catch (BadDataException e) {
