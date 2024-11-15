@@ -13,7 +13,7 @@ import com.purdue.socialmedia.exeptions.BadDataException;
 
 public class LoginSignUpTest {
 
-    private LoginSignUP loginSignUp;
+    private LoginSignUp loginSignUp;
 
     @Before
     public void setUp() {
