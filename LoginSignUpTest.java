@@ -36,7 +36,7 @@ public class LoginSignUpTest {
             fail("Setup failed: Unable to write to accounts.txt");
         }
 
-        String result = loginSignUP.authorizeLogin("luffy", "pirateking");
+        String result = loginSignUp.authorizeLogin("luffy", "pirateking");
         assertEquals("luffy,pirateking", result);
     }
 
@@ -49,21 +49,21 @@ public class LoginSignUpTest {
             fail("Setup failed: Unable to write to accounts.txt");
         }
 
-        String result = loginSignUP.authorizeLogin("zoro", "wrongpassword");
+        String result = loginSignUp.authorizeLogin("zoro", "wrongpassword");
         assertEquals("Wrong password! Please try again.", result);
     }
 
     @Test
     public void testAuthorizeLoginUsernameNotFound() {
         // Simulate a missing username
-        String result = loginSignUP.authorizeLogin("nami", "navigator");
+        String result = loginSignUp.authorizeLogin("nami", "navigator");
         assertEquals("Username does not exist", result);
     }
 
     // Edge Case Tests
     @Test
     public void testAuthorizeLoginWithEmptyUsername() {
-        String result = loginSignUP.authorizeLogin("", "password");
+        String result = loginSignUp.authorizeLogin("", "password");
         assertEquals("Username does not exist", result);
     }
 
@@ -75,13 +75,13 @@ public class LoginSignUpTest {
             fail("Setup failed: Unable to write to accounts.txt");
         }
 
-        String result = loginSignUP.authorizeLogin("usopp", "");
+        String result = loginSignUp.authorizeLogin("usopp", "");
         assertEquals("Wrong password! Please try again.", result);
     }
 
     @Test
     public void testAuthorizeLoginWithNullUsername() {
-        String result = loginSignUP.authorizeLogin(null, "password");
+        String result = loginSignUp.authorizeLogin(null, "password");
         assertEquals("Username does not exist", result);
     }
 
@@ -108,7 +108,7 @@ public class LoginSignUpTest {
         }
 
         try {
-            loginSignUP.createNewUser("sanji", "cookingmaster", "sanji@onepiece.com", "Sanji", "Vinsmoke", "sanji.jpg");
+            loginSignUp.createNewUser("sanji", "cookingmaster", "sanji@onepiece.com", "Sanji", "Vinsmoke", "sanji.jpg");
             fail("Expected BadDataException for username taken");
         } catch (BadDataException e) {
             assertEquals("Username taken", e.getMessage());
