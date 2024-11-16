@@ -8,8 +8,9 @@ import java.net.Socket;
 
 //Client Handler is a class that is used to make sure that clients can run concurrently 
 public class ClientHandler implements Runnable, ClientHandlerService {
-    private Socket clientSocket;
-    private MessageManager messageManager;
+
+    private final Socket clientSocket;
+    private final MessageManager messageManager;
 
     public ClientHandler(Socket socket, MessageManager messageManager) {
         this.clientSocket = socket;
@@ -20,12 +21,14 @@ public class ClientHandler implements Runnable, ClientHandlerService {
     //the start() method for threads inside it. 
     @Override
     public void run() {
-        try (BufferedReader bfr = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-             PrintWriter pw = new PrintWriter(clientSocket.getOutputStream(), true)) {
-
+        try (
+                BufferedReader bfr = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                PrintWriter pw = new PrintWriter(clientSocket.getOutputStream(), true)
+        ) {
             String inputFromClient;
+
             while ((inputFromClient = bfr.readLine()) != null) {
-                if (inputFromClient.equals("exit")) {
+                if ("exit".equals(inputFromClient)) {
                     break;
                 }
 
