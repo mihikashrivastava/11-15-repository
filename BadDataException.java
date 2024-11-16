@@ -5,3 +5,4 @@ public class BadDataException extends Exception {
         super(message);
     }
 }
+
