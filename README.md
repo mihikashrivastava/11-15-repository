@@ -79,6 +79,7 @@ The `ClientHandler` class implements multithreading to allow the direct messagin
 |----------|--------------|-----------------|----------------|-----------------------------------------------------------------------------------------------------------|
 | `run`    | Public       | Void            | None           | Executes the `processCommand` method for a client's command. Sends the processed output back to the client. |
 
+
 ---
 
 ---
