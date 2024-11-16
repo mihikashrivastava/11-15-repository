@@ -1,15 +1,19 @@
-package com.purdue.socialmedia.test;
+package com.purdue;
 
 import static org.junit.Assert.*;
+
+import com.purdue.Message;
+import com.purdue.MessageManager;
+import com.purdue.User;
+import com.purdue.UserNotFoundException;
+
 import org.junit.Before;
 import org.junit.Test;
+
 import java.io.*;
 import java.time.LocalDateTime;
-import java.util.*;
-import com.purdue.socialmedia.data.User;
-import com.purdue.socialmedia.data.Message;
-import com.purdue.socialmedia.data.MessageManager;
-import com.purdue.socialmedia.exeptions.UserNotFoundException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MessageManagerTest {
 
@@ -21,13 +25,37 @@ public class MessageManagerTest {
     @Before
     public void setUp() {
         messageManager = new MessageManager();
-        luffy = new User("luffy", "pirateking", "luffy@onepiece.com", "Monkey D.", "Luffy", "luffy.jpg");
-        zoro = new User("zoro", "swordsman", "zoro@onepiece.com", "Roronoa", "Zoro", "zoro.jpg");
-        message = messageManager.createMessageObject("Hello, Zoro!", false, luffy, zoro, LocalDateTime.now(), null);
+
+        luffy = new User(
+                "luffy",
+                "pirateking",
+                "luffy@onepiece.com",
+                "Monkey D.",
+                "Luffy",
+                "luffy.jpg"
+        );
+
+        zoro = new User(
+                "zoro",
+                "swordsman",
+                "zoro@onepiece.com",
+                "Roronoa",
+                "Zoro",
+                "zoro.jpg"
+        );
+
+        message = messageManager.createMessageObject(
+                "Hello, Zoro!",
+                false,
+                luffy,
+                zoro,
+                LocalDateTime.now(),
+                null
+        );
 
         // Clear or reset the users.bin file before each test
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("users.bin"))) {
-            ArrayList<User> users = new ArrayList<User>();
+            ArrayList<User> users = new ArrayList<>();
             users.add(luffy);
             users.add(zoro);
             oos.writeObject(users);
@@ -53,10 +81,9 @@ public class MessageManagerTest {
         assertEquals("Receiver should be Zoro", zoro, message.getReceiver());
     }
 
-    // Test for Block method
+    // Test for block method
     @Test
     public void testBlockUser() throws UserNotFoundException {
-
         assertFalse("User Zoro should not be blocked initially", luffy.getBlocked().contains(zoro));
         messageManager.block(luffy, zoro);
         assertTrue("User Zoro should be blocked by Luffy", luffy.getBlocked().contains(zoro));
@@ -66,6 +93,7 @@ public class MessageManagerTest {
     @Test
     public void testUnblockUser() throws UserNotFoundException {
         messageManager.block(luffy, zoro);
+
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("users.bin"))) {
             ArrayList<User> users = new ArrayList<>();
             users.add(zoro);
@@ -85,6 +113,7 @@ public class MessageManagerTest {
     public void testRemoveFriend() {
         luffy.addFriend(zoro);
         zoro.addFriend(luffy);
+
         assertTrue("Luffy and Zoro should be friends initially", luffy.getFriends().contains(zoro));
         messageManager.removeFriend(luffy, zoro);
         assertFalse("Luffy and Zoro should no longer be friends", luffy.getFriends().contains(zoro));
@@ -98,27 +127,25 @@ public class MessageManagerTest {
 
     @Test
     public void testSearchUserNotFound() {
-        User tom = new User("tom123", "hellothere", "tom123@gmail.com", "Tom", "Cat", "tom.jpg");
-        assertFalse("User tom should not be found", messageManager.search(tom)); // Assuming tom is not in users.bin
+        User tom = new User(
+                "tom123",
+                "hellothere",
+                "tom123@gmail.com",
+                "Tom",
+                "Cat",
+                "tom.jpg"
+        );
+
+        assertFalse("User Tom should not be found", messageManager.search(tom)); // Assuming Tom is not in users.bin
     }
 
     // Test for sendFriendRequest method
     @Test
     public void testSendFriendRequest() throws UserNotFoundException {
-        var users = new ArrayList<User>();
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("users.bin"))) {
-            users = (ArrayList<User>) ois.readObject();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+        ArrayList<User> users = readUsersFromFile();
         users.add(zoro);
 
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("users.bin"))) {
-            oos.writeObject(users);
-        } catch (IOException e) {
-            fail("Setup failed: Unable to write to users.bin");
-        }
+        writeUsersToFile(users);
 
         assertTrue("Friend request should be sent successfully", messageManager.sendFriendRequest(luffy, zoro));
         assertTrue("Zoro should be in Luffy's requested friends list", luffy.getRequestedFriends().contains(zoro));
@@ -130,14 +157,8 @@ public class MessageManagerTest {
     public void testAcceptFriendRequest() throws UserNotFoundException {
         luffy.getRequestedFriends().add(zoro);
         zoro.getPendingFriendRequests().add(luffy);
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("users.bin"))) {
-            ArrayList<User> users = new ArrayList<>();
-            users.add(luffy);
-            users.add(zoro);
-            oos.writeObject(users);
-        } catch (IOException e) {
-            fail("Setup failed: Unable to write to users.bin");
-        }
+
+        writeUsersToFile(new ArrayList<>(Arrays.asList(luffy, zoro)));
 
         assertTrue("Friend request should be accepted successfully", messageManager.acceptFriendRequest(luffy, zoro));
         assertTrue("Luffy and Zoro should be friends", luffy.getFriends().contains(zoro));
@@ -149,20 +170,30 @@ public class MessageManagerTest {
     public void testRejectFriendRequest() throws UserNotFoundException {
         luffy.getRequestedFriends().add(zoro);
         zoro.getPendingFriendRequests().add(luffy);
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("users.bin"))) {
-            ArrayList<User> users = new ArrayList<>();
-            users.add(luffy);
-            users.add(zoro);
-            oos.writeObject(users);
-        } catch (IOException e) {
-            fail("Setup failed: Unable to write to users.bin");
-        }
+
+        writeUsersToFile(new ArrayList<>(Arrays.asList(luffy, zoro)));
 
         assertTrue("Friend request should be rejected successfully", messageManager.rejectFriendRequest(luffy, zoro));
         assertFalse("Zoro should not be in Luffy's requested friends list", luffy.getRequestedFriends().contains(zoro));
         assertFalse("Luffy should not be in Zoro's pending friend requests list", zoro.getPendingFriendRequests().contains(luffy));
     }
 
+    // Helper Methods
+    private ArrayList<User> readUsersFromFile() {
+        ArrayList<User> users = new ArrayList<>();
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("users.bin"))) {
+            users = (ArrayList<User>) ois.readObject();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return users;
+    }
 
-
+    private void writeUsersToFile(ArrayList<User> users) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("users.bin"))) {
+            oos.writeObject(users);
+        } catch (IOException e) {
+            fail("Setup failed: Unable to write to users.bin");
+        }
+    }
 }
