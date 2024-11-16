@@ -178,23 +178,25 @@ public class MainClient implements MainClientService {
 
             // End login
 
+            //Communicating with the client
             while (true) {
                 String input = JOptionPane.showInputDialog(null, "Enter the command:");
                 if (input == null || input.isEmpty()) {
-                    break;
+                    break; //Breaks if the user enters an empty string or if the string is null
                 }
 
                 String[] inputArr = input.split(",");
-                input = inputArr[0] + "," + loggedInUsername + "," + inputArr[1];
+                input = inputArr[0] + "," + loggedInUsername + "," + inputArr[1]; //This is what will go to the server
 
-                pw.println(input);
-                String response = bfr.readLine();
+                pw.println(input); //Sends the input from the client to the server
+                String response = bfr.readLine(); //Takes the output from the server
 
                 JOptionPane.showMessageDialog(null, response);
 
+                //Asks user if they want to send another message, and breaks out if the user says they do not want to send another message. 
                 int choiceForAnotherMessage = JOptionPane.showConfirmDialog(null, "Would you like to send another command?", "Continue", JOptionPane.YES_NO_OPTION);
                 if (choiceForAnotherMessage != JOptionPane.YES_OPTION) {
-                    pw.println("exit");
+                    pw.println("exit"); 
                     break;
                 }
             }
