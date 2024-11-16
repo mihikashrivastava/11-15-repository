@@ -7,11 +7,19 @@ import java.util.Random;
 
 public class TestUtility {
 
-    //makes 20 new people!
+    // Creates 20 new users and saves them to a file
     public static void createTestData() {
         List<User> users = new ArrayList<>();
+
         for (int i = 1; i <= 20; i++) {
-            users.add(new User("user" + i, "pass" + i, "email" + i + "@example.com", "First" + i, "Last" + i, "image" + i));
+            users.add(new User(
+                    "user" + i,
+                    "pass" + i,
+                    "email" + i + "@example.com",
+                    "First" + i,
+                    "Last" + i,
+                    "image" + i
+            ));
         }
 
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("users.bin"))) {
@@ -21,13 +29,14 @@ public class TestUtility {
         }
     }
 
+    // Deletes the test data file
     public static void clearTestData() {
         new File("users.bin").delete();
     }
 
-    //makes random username
+    // Generates a random username
     public static String getRandomUsername() {
         Random rand = new Random();
-        return "user" + (rand.nextInt(20) + 1);  // returns a username like "user15"
+        return "user" + (rand.nextInt(20) + 1); // Returns a username like "user15"
     }
 }
