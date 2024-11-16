@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+//Client Handler is a class that is used to make sure that clients can run concurrently 
 public class ClientHandler implements Runnable, ClientHandlerService {
     private Socket clientSocket;
     private MessageManager messageManager;
@@ -15,6 +16,8 @@ public class ClientHandler implements Runnable, ClientHandlerService {
         this.messageManager = messageManager;
     }
 
+    //This is the run method, this does the actual processing that the server should do for running with the client, the server calls
+    //the start() method for threads inside it. 
     @Override
     public void run() {
         try (BufferedReader bfr = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
