@@ -1,7 +1,7 @@
-package com.purdue.socialmedia.test;
+package com.purdue;
+
 import static org.junit.Assert.*;
 
-import com.purdue.socialmedia.data.User;
 import org.junit.Before;
 import org.junit.Test;
 import java.time.LocalDateTime;
@@ -20,6 +20,7 @@ public class UserTest {
         caitlyn = new User("caitlyn", "sheriff", "caitlyn@piltover.com", "Caitlyn", "Kiramman", "caitlyn.jpg");
     }
 
+    // Basic Tests
     @Test
     public void testGetUsername() {
         assertEquals("jinx", jinx.getUsername());
@@ -54,6 +55,13 @@ public class UserTest {
     }
 
     @Test
+    public void testSetProfileImageEmptyString() {
+        jinx.setProfileImage("");
+        assertEquals("", jinx.getProfileImage());
+    }
+
+    // Friend List Tests
+    @Test
     public void testAddFriend() {
         jinx.addFriend(vi);
         assertTrue(jinx.getFriends().contains(vi));
@@ -73,6 +81,19 @@ public class UserTest {
     }
 
     @Test
+    public void testAddFriendTwice() {
+        jinx.addFriend(vi);
+        jinx.addFriend(vi); // Attempt to add the same friend again
+        assertEquals(1, jinx.getFriends().size()); // Should still only have one friend
+    }
+
+    @Test
+    public void testRemoveNonExistentFriend() {
+        assertFalse(jinx.removeFriend(vi)); // Vi was never added as a friend
+    }
+
+    // Block List Tests
+    @Test
     public void testAddBlocked() {
         assertTrue(jinx.addBlocked(caitlyn));
         assertTrue(jinx.getBlocked().contains(caitlyn));
@@ -83,38 +104,6 @@ public class UserTest {
         jinx.addBlocked(caitlyn);
         assertTrue(jinx.removeBlocked(caitlyn));
         assertFalse(jinx.getBlocked().contains(caitlyn));
-    }
-
-    @Test
-    public void testChangeVisibility() {
-        boolean initialVisibility = jinx.changeVisibility();
-        assertEquals(initialVisibility, jinx.changeVisibility());
-    }
-
-    @Test
-    public void testAddUserToFile() {
-        // This test checks if the method can execute without exceptions.
-        // It does not verify the content of the file.
-        jinx.addUserToFile(jinx);
-    }
-
-    @Test
-    public void testSetProfileImageEmptyString() {
-        jinx.setProfileImage("");
-        assertEquals("", jinx.getProfileImage());
-    }
-
-    // Boundary Case Tests
-    @Test
-    public void testAddFriendTwice() {
-        jinx.addFriend(vi);
-        jinx.addFriend(vi); // Attempt to add the same friend again
-        assertEquals(1, jinx.getFriends().size()); // Should still only have one friend
-    }
-
-    @Test
-    public void testRemoveNonExistentFriend() {
-        assertFalse(jinx.removeFriend(vi)); // Vi was never added as a friend
     }
 
     @Test
@@ -129,6 +118,21 @@ public class UserTest {
         assertFalse(jinx.removeBlocked(vi)); // Vi was never added to blocked users
     }
 
+    // Visibility Tests
+    @Test
+    public void testChangeVisibility() {
+        boolean initialVisibility = jinx.getVisibility();
+        assertNotEquals(initialVisibility, jinx.changeVisibility());
+    }
+
+    // File Operation Tests
+    @Test
+    public void testAddUserToFile() {
+        // This test checks if the method can execute without exceptions.
+        // It does not verify the content of the file.
+        jinx.addUserToFile(jinx);
+    }
+
     @Test
     public void testAddUserToFileMultipleTimes() {
         try {
@@ -140,10 +144,11 @@ public class UserTest {
         }
     }
 
-    // Negative Test Cases
+    // Boundary Case Tests
     @Test
     public void testInvalidEmailFormat() {
         jinx.setEmail("invalidEmail");
         assertEquals("invalidEmail", jinx.getEmail()); // Basic test, you might want to validate format in the class
     }
 }
+
