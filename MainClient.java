@@ -1,4 +1,4 @@
-package.com.purdue;
+package com.purdue;
 
 import java.io.*;
 import java.net.*;
@@ -17,10 +17,11 @@ public class MainClient implements MainClientService {
              BufferedReader bfr = new BufferedReader(new InputStreamReader(socket.getInputStream()));
              PrintWriter pw = new PrintWriter(socket.getOutputStream(), true)) {
 
-            // login
+            // Login
 
             JOptionPane.showMessageDialog(null, "Welcome to Purdue Social Media!");
-            int choice = JOptionPane.showConfirmDialog(null, "Are you a new user?", "Login or Signup", JOptionPane.YES_NO_OPTION);
+            int choice = JOptionPane.showConfirmDialog(null,
+                    "Are you a new user?", "Login or Signup", JOptionPane.YES_NO_OPTION);
             boolean newUser = (choice == JOptionPane.YES_OPTION);
 
             String username = "";
@@ -39,7 +40,8 @@ public class MainClient implements MainClientService {
                 while (!validUsername) {
                     username = JOptionPane.showInputDialog("Enter username:");
                     if (username.contains(",")) {
-                        JOptionPane.showMessageDialog(null, "Username cannot contain commas.", "Invalid Username", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Username cannot" +
+                                " contain commas.", "Invalid Username", JOptionPane.ERROR_MESSAGE);
                         continue;
                     }
 
@@ -56,7 +58,8 @@ public class MainClient implements MainClientService {
                             String existingUsername = parts[0];
                             if (existingUsername.equals(username)) {
                                 usernameExists = true;
-                                JOptionPane.showMessageDialog(null, "Username already exists. Please choose another.", "Username Taken", JOptionPane.ERROR_MESSAGE);
+                                JOptionPane.showMessageDialog(null, "Username already exists." +
+                                        " Please choose another.", "Username Taken", JOptionPane.ERROR_MESSAGE);
                                 break;
                             }
                         }
@@ -74,9 +77,11 @@ public class MainClient implements MainClientService {
                 while (!validPassword) {
                     password = JOptionPane.showInputDialog("Enter password:");
                     if (password.contains(",")) {
-                        JOptionPane.showMessageDialog(null, "Password cannot contain commas.", "Invalid Password", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Password cannot " +
+                                "contain commas.", "Invalid Password", JOptionPane.ERROR_MESSAGE);
                     } else if (password.length() < 8) {
-                        JOptionPane.showMessageDialog(null, "Password must be at least 8 characters.", "Invalid Password", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Password must" +
+                                " be at least 8 characters.", "Invalid Password", JOptionPane.ERROR_MESSAGE);
                     } else {
                         validPassword = true;
                     }
@@ -87,7 +92,8 @@ public class MainClient implements MainClientService {
                 while (!validEmail) {
                     email = JOptionPane.showInputDialog("Enter email:");
                     if (!email.contains("@")) {
-                        JOptionPane.showMessageDialog(null, "Invalid email address.", "Invalid Email", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Invalid " +
+                                "email address.", "Invalid Email", JOptionPane.ERROR_MESSAGE);
                     } else {
                         validEmail = true;
                     }
@@ -97,7 +103,8 @@ public class MainClient implements MainClientService {
                 while (firstName.isEmpty()) {
                     firstName = JOptionPane.showInputDialog("Enter first name:");
                     if (firstName.isEmpty()) {
-                        JOptionPane.showMessageDialog(null, "First name cannot be empty.", "Invalid First Name", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "First " +
+                                "name cannot be empty.", "Invalid First Name", JOptionPane.ERROR_MESSAGE);
                     }
                 }
 
@@ -105,7 +112,8 @@ public class MainClient implements MainClientService {
                 while (lastName.isEmpty()) {
                     lastName = JOptionPane.showInputDialog("Enter last name:");
                     if (lastName.isEmpty()) {
-                        JOptionPane.showMessageDialog(null, "Last name cannot be empty.", "Invalid Last Name", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Last name " +
+                                "cannot be empty.", "Invalid Last Name", JOptionPane.ERROR_MESSAGE);
                     }
                 }
 
@@ -114,7 +122,8 @@ public class MainClient implements MainClientService {
                     loginSignUP.createNewUser(username, password, email, firstName, lastName, profileImage);
                     JOptionPane.showMessageDialog(null, "Account created successfully!");
                 } catch (BadDataException bde) {
-                    JOptionPane.showMessageDialog(null, bde.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null,
+                            bde.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
 
                 boolean validLogin = false;
@@ -125,16 +134,14 @@ public class MainClient implements MainClientService {
                     String loginResponse = loginSignUP.authorizeLogin(username, password);
 
                     if (loginResponse.equals("Wrong password! Please try again.")) {
-                        JOptionPane.showMessageDialog(null, "Wrong password! Please try again.", "Invalid Password", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Wrong password! " +
+                                "Please try again.", "Invalid Password", JOptionPane.ERROR_MESSAGE);
                         continue;
-                    }
-
-                    else if (loginResponse.equals("Username does not exist")) {
-                        JOptionPane.showMessageDialog(null, "Username does not exist! Please try again.", "Invalid Username", JOptionPane.ERROR_MESSAGE);
+                    } else if (loginResponse.equals("Username does not exist")) {
+                        JOptionPane.showMessageDialog(null, "Username does not " +
+                                "exist! Please try again.", "Invalid Username", JOptionPane.ERROR_MESSAGE);
                         continue;
-                    }
-
-                    else {
+                    } else {
                         String[] loginInfo = loginSignUP.authorizeLogin(username, password).split(",");
 
                         String authorizedUser = loginInfo[0];
@@ -155,16 +162,14 @@ public class MainClient implements MainClientService {
                     String loginResponse = loginSignUP.authorizeLogin(username, password);
 
                     if (loginResponse.equals("Wrong password! Please try again.")) {
-                        JOptionPane.showMessageDialog(null, "Wrong password! Please try again.", "Invalid Password", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Wrong password! Please " +
+                                "try again.", "Invalid Password", JOptionPane.ERROR_MESSAGE);
                         continue;
-                    }
-
-                    else if (loginResponse.equals("Username does not exist")) {
-                        JOptionPane.showMessageDialog(null, "Username does not exist! Please try again.", "Invalid Username", JOptionPane.ERROR_MESSAGE);
+                    } else if (loginResponse.equals("Username does not exist")) {
+                        JOptionPane.showMessageDialog(null, "Username does " +
+                                "not exist! Please try again.", "Invalid Username", JOptionPane.ERROR_MESSAGE);
                         continue;
-                    }
-
-                    else {
+                    } else {
                         String[] loginInfo = loginSignUP.authorizeLogin(username, password).split(",");
 
                         String authorizedUser = loginInfo[0];
@@ -193,10 +198,11 @@ public class MainClient implements MainClientService {
 
                 JOptionPane.showMessageDialog(null, response);
 
-                //Asks user if they want to send another message, and breaks out if the user says they do not want to send another message. 
-                int choiceForAnotherMessage = JOptionPane.showConfirmDialog(null, "Would you like to send another command?", "Continue", JOptionPane.YES_NO_OPTION);
+                //Asks user if they want to send another message, and breaks out if the user says they do not want to send another message.
+                int choiceForAnotherMessage = JOptionPane.showConfirmDialog(null, "Would " +
+                        "you like to send another command?", "Continue", JOptionPane.YES_NO_OPTION);
                 if (choiceForAnotherMessage != JOptionPane.YES_OPTION) {
-                    pw.println("exit"); 
+                    pw.println("exit");
                     break;
                 }
             }
