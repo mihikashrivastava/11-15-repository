@@ -1,9 +1,7 @@
-package com.purdue.socialmedia.test;
+package com.purdue;
 
 import static org.junit.Assert.*;
 
-import com.purdue.socialmedia.data.Message;
-import com.purdue.socialmedia.data.User;
 import org.junit.Before;
 import org.junit.Test;
 import java.time.LocalDateTime;
@@ -19,12 +17,43 @@ public class MessageTest {
 
     @Before
     public void setUp() {
-        sender = new User("luffy", "gomugomuno", "luffy@onepiece.com", "Monkey D.", "Luffy", "luffy.jpg");
-        receiver = new User("zoro", "santoryu", "zoro@onepiece.com", "Roronoa", "Zoro", "zoro.jpg");
+        sender = new User(
+                "luffy",
+                "gomugomuno",
+                "luffy@onepiece.com",
+                "Monkey D.",
+                "Luffy",
+                "luffy.jpg"
+        );
+
+        receiver = new User(
+                "zoro",
+                "santoryu",
+                "zoro@onepiece.com",
+                "Roronoa",
+                "Zoro",
+                "zoro.jpg"
+        );
+
         sampleImage = new byte[]{1, 2, 3, 4, 5};
 
-        textMessage = new Message("Hello, Zoro!", false, sender, receiver, LocalDateTime.now(), null);
-        imageMessage = new Message(null, true, sender, receiver, LocalDateTime.now(), sampleImage);
+        textMessage = new Message(
+                "Hello, Zoro!",
+                false,
+                sender,
+                receiver,
+                LocalDateTime.now(),
+                null
+        );
+
+        imageMessage = new Message(
+                null,
+                true,
+                sender,
+                receiver,
+                LocalDateTime.now(),
+                sampleImage
+        );
     }
 
     // Basic Tests
@@ -71,7 +100,15 @@ public class MessageTest {
 
     @Test
     public void testSetSender() {
-        User newSender = new User("sanji", "diablejambe", "sanji@onepiece.com", "Sanji", "Vinsmoke", "sanji.jpg");
+        User newSender = new User(
+                "sanji",
+                "diablejambe",
+                "sanji@onepiece.com",
+                "Sanji",
+                "Vinsmoke",
+                "sanji.jpg"
+        );
+
         textMessage.setSenderUsername(newSender);
         assertEquals("sanji", textMessage.getSender().getUsername());
     }
