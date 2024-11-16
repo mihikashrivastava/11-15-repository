@@ -6,35 +6,35 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class User implements Serializable, UserService {
-    String username;
 
+    private String username;
+    private String password;
+    private String email;
+    private String firstName;
+    private String lastName;
+    private String profileImage;
+    private LocalDateTime lastLoginAt;
+    private ArrayList<User> friends;
+    private ArrayList<User> blocked;
+    private ArrayList<User> requestedFriend;
+    private ArrayList<User> requestedFriends;
+    private ArrayList<User> pendingFriendRequests;
+    private boolean privateAccount = false;
 
-    String password;
-    String email;
-    String firstName;
-    String lastName;
-    String profileImage;
-    LocalDateTime lastLoginAt;
-    ArrayList<User> friends;
-    ArrayList<User> blocked;
-    ArrayList<User> requestedFriend;
-    ArrayList<User> requestedFriends;
-    ArrayList<User> pendingFriendRequests;
-    boolean privateAccount = false;
-
-    public User (String userName, String password, String email, String firstName, String lastName, String profileImage) {
+    public User(String userName, String password, String email, String firstName, String lastName, String profileImage) {
         this.username = userName;
         this.password = password;
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
         this.profileImage = profileImage;
-        this.friends = new ArrayList<User>();
-        this.blocked = new ArrayList<User>();
-        this.requestedFriend = new ArrayList<User>();
-        this.pendingFriendRequests = new ArrayList<User>();
+        this.friends = new ArrayList<>();
+        this.blocked = new ArrayList<>();
+        this.requestedFriend = new ArrayList<>();
+        this.pendingFriendRequests = new ArrayList<>();
     }
 
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
@@ -44,10 +44,10 @@ public class User implements Serializable, UserService {
                 Objects.equals(password, user.password);
     }
 
+    @Override
     public int hashCode() {
         return Objects.hash(username, email, password);
     }
-
 
     public String getUsername() {
         return username;
@@ -88,6 +88,7 @@ public class User implements Serializable, UserService {
     public void setLastLoginAt(LocalDateTime lastLoginAt) {
         this.lastLoginAt = lastLoginAt;
     }
+
     public String getFirstName() {
         return firstName;
     }
@@ -108,46 +109,46 @@ public class User implements Serializable, UserService {
         return friends;
     }
 
-    public boolean addFriend (User friend) {
+    public boolean addFriend(User friend) {
         if (friends.contains(friend)) {
             return false;
-        } else {
-            friends.add(friend);
-            return true;
         }
+        friends.add(friend);
+        return true;
     }
 
-    public int getFriend (User friend) {
+    public int getFriend(User friend) {
         return friends.indexOf(friend);
     }
 
-    public ArrayList<User> getPendingFriendRequests () {
+    public ArrayList<User> getPendingFriendRequests() {
         return pendingFriendRequests;
     }
+
     public ArrayList<User> getRequestedFriends() {
         return requestedFriend;
     }
+
     public boolean getVisibility() {
         return privateAccount;
     }
 
-    public boolean removeFriend (User friend) {
+    public boolean removeFriend(User friend) {
         if (friends.contains(friend)) {
             friends.remove(friend);
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     public boolean addBlocked(User blockedUser) {
         if (!blocked.contains(blockedUser)) {
             blocked.add(blockedUser);
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
+
     public ArrayList<User> getBlocked() {
         return blocked;
     }
@@ -156,9 +157,8 @@ public class User implements Serializable, UserService {
         if (blocked.contains(blockedUser)) {
             blocked.remove(blockedUser);
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     public void addUserToFile(User user) {
@@ -181,8 +181,9 @@ public class User implements Serializable, UserService {
             e.printStackTrace();
         }
     }
+
     public boolean changeVisibility() {
-        return !privateAccount;
+        privateAccount = !privateAccount;
+        return privateAccount;
     }
 }
-
