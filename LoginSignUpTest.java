@@ -1,15 +1,13 @@
-package com.purdue.socialmedia.test;
+package com.purdue;
 
 import static org.junit.Assert.*;
 
-import com.purdue.socialmedia.data.LoginSignUp;
+import com.purdue.LoginSignUp;
 import org.junit.Before;
 import org.junit.Test;
+
 import java.io.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import com.purdue.socialmedia.data.User;
-import com.purdue.socialmedia.exeptions.BadDataException;
 
 public class LoginSignUpTest {
 
@@ -18,6 +16,7 @@ public class LoginSignUpTest {
     @Before
     public void setUp() {
         loginSignUp = new LoginSignUp();
+
         // Clear the "accounts.txt" file before each test
         try (PrintWriter writer = new PrintWriter(new FileWriter("accounts.txt"))) {
             writer.write(""); // Clear the file
@@ -108,7 +107,14 @@ public class LoginSignUpTest {
         }
 
         try {
-            loginSignUp.createNewUser("sanji", "cookingmaster", "sanji@onepiece.com", "Sanji", "Vinsmoke", "sanji.jpg");
+            loginSignUp.createNewUser(
+                    "sanji",
+                    "cookingmaster",
+                    "sanji@onepiece.com",
+                    "Sanji",
+                    "Vinsmoke",
+                    "sanji.jpg"
+            );
             fail("Expected BadDataException for username taken");
         } catch (BadDataException e) {
             assertEquals("Username taken", e.getMessage());
@@ -121,7 +127,14 @@ public class LoginSignUpTest {
     public void testCreateNewUserInvalidUsername() {
         // Test for username containing spaces or commas
         try {
-            loginSignUp.createNewUser("bad username", "password123", "bad@user.com", "Bad", "User", "bad.jpg");
+            loginSignUp.createNewUser(
+                    "bad username",
+                    "password123",
+                    "bad@user.com",
+                    "Bad",
+                    "User",
+                    "bad.jpg"
+            );
             fail("Expected BadDataException for invalid username");
         } catch (BadDataException e) {
             assertEquals("Username contains either spaces or commas", e.getMessage());
@@ -130,12 +143,18 @@ public class LoginSignUpTest {
         }
     }
 
-
     @Test
     public void testCreateNewUserSuccess() {
         // Test for successful user creation
         try {
-            User newUser = loginSignUp.createNewUser("brook", "soulking", "brook@onepiece.com", "Brook", "Soul", "brook.jpg");
+            User newUser = loginSignUp.createNewUser(
+                    "brook",
+                    "soulking",
+                    "brook@onepiece.com",
+                    "Brook",
+                    "Soul",
+                    "brook.jpg"
+            );
             String username = newUser.getUsername();
             assertEquals("brook", username);
         } catch (BadDataException e) {
@@ -144,7 +163,4 @@ public class LoginSignUpTest {
             fail("Unexpected exception: " + e.getMessage());
         }
     }
-
-
-
 }
