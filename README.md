@@ -32,10 +32,15 @@ The `MainServer` class is the server-side component of the application. Based on
 
 ## How to Run
 
+Before running, ensure that the files `accounts.txt` and `users.bin` exist. These files are required for the code to run. If they do not exist, create these files and leave them empty.
+
 1. Launch the server application to initialize the server and allow it to accept incoming client connections.
 2. Start the client application to establish a connection to the server.
-3. Create a user object with details such as username, password, email, etc. New users must meet validation criteria for these fields.
-4. Log in using the newly created username and password to access the portal for entering commands.
+3. Create user objects with details such as username, password, email, etc. Create at least **two new users**:
+   - Create a user, log in from their perspective, and then send no commands.
+   - Repeat the process for the second user.
+
+4. Log in using the created usernames and passwords to access the portal for entering commands.
 
 ### Commands
 
@@ -73,5 +78,7 @@ The `ClientHandler` class implements multithreading to allow the direct messagin
 | **Name** | **Modifier** | **Return Type** | **Parameters** | **Description**                                                                                           |
 |----------|--------------|-----------------|----------------|-----------------------------------------------------------------------------------------------------------|
 | `run`    | Public       | Void            | None           | Executes the `processCommand` method for a client's command. Sends the processed output back to the client. |
+
+---
 
 ---
