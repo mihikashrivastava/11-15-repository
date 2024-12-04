@@ -14,4 +14,9 @@ public interface MessageManagerService {
     public boolean acceptFriendRequest(User userFrom, User userTo) throws UserNotFoundException;
     public boolean rejectFriendRequest(User userFrom, User userTo) throws UserNotFoundException;
     public ArrayList<User> searchUsersFromFile(String s);
+    public ArrayList<User> readUsersFromFile();
+    private void updateUsersInFile(ArrayList<User> users, User... updatedUsers);
+    public static String getCorrectFileName(String user1, String user2);
+    public static ArrayList<Message> getMessagesFromFile(String fileName);
+    public void deleteMessage(String fileName, String messageId);
 }
