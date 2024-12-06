@@ -1,6 +1,4 @@
-Sure, here's the updated content formatted as a Markdown file:
 
-```markdown
 # Direct Messaging App - Phase 3
 
 ## Description
